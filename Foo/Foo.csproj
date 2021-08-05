@@ -2,23 +2,24 @@
 
 	<PropertyGroup>
 		<!-- iOS, Android, MacCatalyst -->
-		<TargetFramework>net6.0-android</TargetFramework>
+		<TargetFramework>net6.0-ios</TargetFramework>
 		<OutputType>Exe</OutputType>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<RootNamespace>Foo</RootNamespace>
-
+		<PublishTrimmed>false</PublishTrimmed>
+		
 		<!-- Display name -->
 		<ApplicationTitle>Foo</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.Foo</ApplicationId>
+		<ApplicationId>org.lambdageek.Foo</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationVersion>1.0</ApplicationVersion>
 		<AndroidVersionCode>1</AndroidVersionCode>
 
-		<UseInterpreter>true</UseInterpreter>
+		<UseInterpreter>false</UseInterpreter>
 	</PropertyGroup>
 
 	<ItemGroup>
