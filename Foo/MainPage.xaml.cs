@@ -24,7 +24,7 @@ namespace Foo
 
 		public void OutMethod()
         {
-			count--;
+			count++;
 			CounterLabel.Text = $"{GetEE()}: {count}";
 		}
 
