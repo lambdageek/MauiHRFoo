@@ -12,7 +12,7 @@
 		<ApplicationTitle>Foo</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.Foo</ApplicationId>
+		<ApplicationId>org.lambdageek.Foo</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationVersion>1.0</ApplicationVersion>
