@@ -7,7 +7,6 @@
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<RootNamespace>Foo</RootNamespace>
-		<PublishTrimmed>false</PublishTrimmed>
 		
 		<!-- Display name -->
 		<ApplicationTitle>Foo</ApplicationTitle>
