@@ -12,24 +12,35 @@
 		<ApplicationTitle>Foo</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>org.lambdageek.Foo</ApplicationId>
+		<ApplicationId>com.companyname.Foo</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationVersion>1.0</ApplicationVersion>
 		<AndroidVersionCode>1</AndroidVersionCode>
-
+	</PropertyGroup>
+			
+	<!-- Hot reload support-->
+	<PropertyGroup>
+		<!-- Hot reload requires interpreter -->
 		<UseInterpreter>true</UseInterpreter>
+	</PropertyGroup>
+	
+	<!-- BUG: xamarin-macios does not set DOTNET_MODIFIABLE_ASSEMBLIES=debug if interpreter is on. -->
+	<PropertyGroup Condition="$(TargetFramework.Contains('-maccatalyst')) or $(TargetFramework.Contains('-ios'))">
 
 		<MTouchExtraArgs>--setenv=DOTNET_MODIFIABLE_ASSEMBLIES=Debug --setenv=MONO_LOG_LEVEL=debug --setenv=MONO_LOG_MASK=all</MTouchExtraArgs>
 	</PropertyGroup>
 
-	<ItemGroup>
+	<!-- BUG: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1362367 -->
+	<ItemGroup Condition="$(TargetFramework.Contains('-maccatalyst')) or $(TargetFramework.Contains('-ios'))">
+		<!-- FIXME: Can this be a relative path relative to XMA?  Without hardcoding the home directory? -->
 		<MonoAotCrossCompiler Include="/Users/alklig/Library/Caches/Xamarin/XMA/SDKs/dotnet/packs/Microsoft.NETCore.App.Runtime.AOT.osx-x64.Cross.iossimulator-x64/6.0.0-rc.1.21401.3/tools/mono-aot-cross">
 			<RuntimeIdentifier>iossimulator-x64</RuntimeIdentifier>
 		</MonoAotCrossCompiler>
 	</ItemGroup>
 
-	<Target Name="CopyCoreLibFromMac" BeforeTargets="_LinkNativeExecutable">
+	<!-- BUG: xamarin-macios copies AOT file of length 0 from Windows to Mac-->
+	<Target Name="CopyCoreLibFromMac" BeforeTargets="_LinkNativeExecutable" Condition="'$(IsMacEnabled)' == 'true' and ($(TargetFramework.Contains('-maccatalyst')) or $(TargetFramework.Contains('-ios')))">
 		<ItemGroup>
 			<AlekseyFilesToCopy Include="@(_XamarinMainLibraries)" />
 		</ItemGroup>
@@ -37,7 +48,8 @@
 		<CopyFileFromBuildServer SessionId="$(BuildSessionId)" File="@(AlekseyFilesToCopy)" />
 	</Target>
 
-	<Target Name="RemoveStubMonoLibraries" DependsOnTargets="_ComputeVariables" BeforeTargets="_ComputeLinkerArguments">
+	<!-- BUG: xamarin-macios static links stub libraries for iossimulator.  Shoudl use dynamic linking instead -->
+	<Target Name="RemoveStubMonoLibraries" DependsOnTargets="_ComputeVariables" BeforeTargets="_ComputeLinkerArguments" Condition="false and ('$(IsMacEnabled)' == 'true' and ($(TargetFramework.Contains('-maccatalyst')) or $(TargetFramework.Contains('-ios'))))">
 		<ItemGroup>
 			<StubLibrariesToRemove Include="@_MonoLibrary)" Condition="'%(Filename)' != '' and $([System.String]::Copy('%(Filename)').EndsWith('-stub-static'))" />
 			<_MonoLibrary Remove="@(StubLibrariesToRemove)" />
@@ -46,11 +58,7 @@
 	
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiImage
-			Include="Resources\appicon.svg"
-			ForegroundFile="Resources\appiconfg.svg"
-			IsAppIcon="true"
-			Color="#512BD4" />
+		<MauiImage Include="Resources\appicon.svg" ForegroundFile="Resources\appiconfg.svg" IsAppIcon="true" Color="#512BD4" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" />
@@ -61,7 +69,7 @@
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
 
-		<AndroidEnvironment Include="Env.txt"/>
+		<AndroidEnvironment Include="Env.txt" />
 	</ItemGroup>
 
 	<PropertyGroup>
