@@ -19,8 +19,31 @@
 		<AndroidVersionCode>1</AndroidVersionCode>
 
 		<UseInterpreter>true</UseInterpreter>
+
+		<MTouchExtraArgs>--setenv=DOTNET_MODIFIABLE_ASSEMBLIES=Debug --setenv=MONO_LOG_LEVEL=debug --setenv=MONO_LOG_MASK=all</MTouchExtraArgs>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<MonoAotCrossCompiler Include="/Users/alklig/Library/Caches/Xamarin/XMA/SDKs/dotnet/packs/Microsoft.NETCore.App.Runtime.AOT.osx-x64.Cross.iossimulator-x64/6.0.0-rc.1.21401.3/tools/mono-aot-cross">
+			<RuntimeIdentifier>iossimulator-x64</RuntimeIdentifier>
+		</MonoAotCrossCompiler>
+	</ItemGroup>
+
+	<Target Name="CopyCoreLibFromMac" BeforeTargets="_LinkNativeExecutable">
+		<ItemGroup>
+			<AlekseyFilesToCopy Include="@(_XamarinMainLibraries)" />
+		</ItemGroup>
+		<Delete Files="@(AlekseyFilesToCopy)" />
+		<CopyFileFromBuildServer SessionId="$(BuildSessionId)" File="@(AlekseyFilesToCopy)" />
+	</Target>
+
+	<Target Name="RemoveStubMonoLibraries" DependsOnTargets="_ComputeVariables" BeforeTargets="_ComputeLinkerArguments">
+		<ItemGroup>
+			<StubLibrariesToRemove Include="@_MonoLibrary)" Condition="'%(Filename)' != '' and $([System.String]::Copy('%(Filename)').EndsWith('-stub-static'))" />
+			<_MonoLibrary Remove="@(StubLibrariesToRemove)" />
+		</ItemGroup>	
+	</Target>
+	
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiImage
