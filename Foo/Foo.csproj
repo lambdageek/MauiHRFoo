@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<!-- iOS, Android, MacCatalyst -->
-		<TargetFramework>net6.0-android</TargetFramework>
+		<TargetFrameworks>net6.0-android;net6.0-ios</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
