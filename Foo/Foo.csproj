@@ -34,7 +34,7 @@
 	<!-- BUG: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1362367 -->
 	<ItemGroup Condition="$(TargetFramework.Contains('-maccatalyst')) or $(TargetFramework.Contains('-ios'))">
 		<!-- FIXME: Can this be a relative path relative to XMA?  Without hardcoding the home directory? -->
-		<MonoAotCrossCompiler Include="/Users/alklig/Library/Caches/Xamarin/XMA/SDKs/dotnet/packs/Microsoft.NETCore.App.Runtime.AOT.osx-x64.Cross.iossimulator-x64/6.0.0-rc.1.21401.3/tools/mono-aot-cross">
+		<MonoAotCrossCompiler Include="/Users/alklig/Library/Caches/Xamarin/XMA/SDKs/dotnet/packs/Microsoft.NETCore.App.Runtime.AOT.osx-x64.Cross.iossimulator-x64/6.0.0-preview.7.21377.19/tools/mono-aot-cross">
 			<RuntimeIdentifier>iossimulator-x64</RuntimeIdentifier>
 		</MonoAotCrossCompiler>
 	</ItemGroup>
