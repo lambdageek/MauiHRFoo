@@ -40,6 +40,7 @@
 	</ItemGroup>
 
 	<!-- BUG: xamarin-macios copies AOT file of length 0 from Windows to Mac-->
+	<!-- fixed in https://github.com/xamarin/xamarin-macios/pull/12367, but probably not in preview7-->
 	<Target Name="CopyCoreLibFromMac" BeforeTargets="_LinkNativeExecutable" Condition="'$(IsMacEnabled)' == 'true' and ($(TargetFramework.Contains('-maccatalyst')) or $(TargetFramework.Contains('-ios')))">
 		<ItemGroup>
 			<AlekseyFilesToCopy Include="@(_XamarinMainLibraries)" />
